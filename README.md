@@ -18,6 +18,9 @@ This file can be renamed to anything you want.
 
 Keylogs will be saved to the server backend in the same directory as `server.py` and will be named by the IP address of the victim the log came from.
 
+# Connecting to the server
+You can connect to the server as a client by making a telnet connection to your server's IP address via port `12345`
+
 # Drawbacks of this being a FREE and PUBLIC tool
 Because this tool is free, there will be some limitations to preserve analysis in the wild.
 Unlike the private version of my Remote Access Tool(DARTEN) which this sources from, There is no...`
