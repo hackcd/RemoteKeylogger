@@ -29,10 +29,10 @@ These default passwords can be changed in the code.
 
 If you would like to add more logins, there is a file by the name `ADMINS.txt` which will be found in the same directory as `server.py`
 You can add one login per line in this file using the following format...
-`username:password<br />
+username:password<br />
 username2:password2__
 username3:password3  
-username4:password4  `
+username4:password4  
 
 # Drawbacks of this being a FREE and PUBLIC tool
 Because this tool is free, there will be some limitations to preserve analysis in the wild.
