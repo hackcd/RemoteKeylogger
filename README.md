@@ -28,21 +28,21 @@ password: password
 These default passwords can be changed in the code.
 
 If you would like to add more logins, there is a file by the name `ADMINS.txt` which will be found in the same directory as `server.py`
-You can add one login per line in this file using the following format...
-username:password<br />
-username2:password2__
-username3:password3  
-username4:password4  
+You can add one login per line in this file using the following format...<br />
+`username1:password1`<br />
+`username2:password2`<br />
+`username3:password3`<br />
+`username4:password4`<br />
 
 # Drawbacks of this being a FREE and PUBLIC tool
 Because this tool is free, there will be some limitations to preserve analysis in the wild.
-Unlike the private version of my Remote Access Tool(DARTEN) which this sources from, There is no...`
-	-Directory Traversal  
-	-Process Hollowing  
-	-File Dropping  
-	-Dll Injection  
-	-Dynamic Registry Modification  
-	-Process Monitoring  
-`
+Unlike the private version of my Remote Access Tool(DARTEN) which this sources from, There is no...<br />
+	`-Directory Traversal`<br />
+	`-Process Hollowing`<br />
+	`-File Dropping`<br />
+	`-Dll Injection`<br />
+	`-Dynamic Registry Modification`<br />
+	`-Process Monitoring`<br />
+
 # Persistance
 This tool does create a registry key to ensure persistance
