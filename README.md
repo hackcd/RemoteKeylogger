@@ -21,15 +21,28 @@ Keylogs will be saved to the server backend in the same directory as `server.py`
 # Connecting to the server
 You can connect to the server as a client by making a telnet connection to your server's IP address via port `12345`
 
+Login using the default username and password
+username: username
+password: password
+
+These default passwords can be changed in the code.
+
+If you would like to add more logins, there is a file by the name `ADMINS.txt` which will be found in the same directory as `server.py`
+You can add one login per line in this file using the following format...
+`username:password  
+username2:password2  
+username3:password3  
+username4:password4  `
+
 # Drawbacks of this being a FREE and PUBLIC tool
 Because this tool is free, there will be some limitations to preserve analysis in the wild.
 Unlike the private version of my Remote Access Tool(DARTEN) which this sources from, There is no...`
-	-Directory Traversal
-	-Process Hollowing
-	-File Dropping
-	-Dll Injection
-	-Dynamic Registry Modification
-	-Process Monitoring
+	-Directory Traversal  
+	-Process Hollowing  
+	-File Dropping  
+	-Dll Injection  
+	-Dynamic Registry Modification  
+	-Process Monitoring  
 `
 # Persistance
 This tool does create a registry key to ensure persistance
