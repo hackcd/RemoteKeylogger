@@ -20,13 +20,13 @@ Keylogs will be saved to the server backend in the same directory as `server.py`
 
 # Drawbacks of this being a FREE and PUBLIC tool
 Because this tool is free, there will be some limitations to preserve analysis in the wild.
-Unlike the private version of my Remote Access Tool(DARTEN) which this sources from, There is no...`\n
-	-Directory Traversal\n
-	-Process Hollowing\n
-	-File Dropping\n
-	-Dll Injection\n
-	-Dynamic Registry Modification\n
-	-Process Monitoring\n
+Unlike the private version of my Remote Access Tool(DARTEN) which this sources from, There is no...`
+	-Directory Traversal
+	-Process Hollowing
+	-File Dropping
+	-Dll Injection
+	-Dynamic Registry Modification
+	-Process Monitoring
 `
 # Persistance
 This tool does create a registry key to ensure persistance
