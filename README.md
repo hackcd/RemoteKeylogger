@@ -44,5 +44,5 @@ Unlike the private version of my Remote Access Tool(DARTEN) which this sources f
 	`-Dynamic Registry Modification`<br />
 	`-Process Monitoring`<br />
 
-# Persistance
-This tool does create a registry key to ensure persistance
+# Persistence
+This tool does create a registry key to ensure persistence
